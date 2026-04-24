@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.offline.ime">
+
+    <!-- ========== 核心权限（输入法服务必需） ========== -->
+    <uses-permission android:name="android.permission.BIND_INPUT_METHOD" />
+
+    <!-- ========== 可选权限 ========== -->
+    <!-- 语音输入（可选，默认不启用） -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"
+        android:required="false" />
+    <!-- 读取自定义皮肤图片（可选） -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:required="false"
+        android:maxSdkVersion="32" />
+    <!-- Android 13+ 使用细粒度权限 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        android:required="false" />
+    <!-- 按键振动反馈（可选） -->
+    <uses-permission android:name="android.permission.VIBRATE"
+        android:required="false" />
+
+    <!-- ========== 明确禁止声明的权限 ========== -->
+    <!-- 我们不声明以下任何权限：
+         INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE,
+         CHANGE_WIFI_STATE, BLUETOOTH, NFC,
+         ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION,
+         READ_PHONE_STATE, SEND_SMS, CALL_PHONE,
+         WRITE_EXTERNAL_STORAGE (除皮肤目录外)
+    -->
+
+    <application
+        android:name=".core.IMEApplication"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        android:allowBackup="true"
+        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:resizeableActivity="false">
+
+        <!-- 输入法服务（核心） -->
+        <service
+            android:name=".core.OfflineInputMethodService"
+            android:permission="android.permission.BIND_INPUT_METHOD"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!-- 设置界面 -->
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 剪贴板管理界面 -->
+        <activity
+            android:name=".clipboard.ClipboardActivity"
+            android:label="@string/clipboard_title"
+            android:exported="false" />
+
+        <!-- 皮肤选择界面 -->
+        <activity
+            android:name=".skin.SkinActivity"
+            android:label="@string/skin_title"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/keyboard_bg">
+
+    <!-- 分类Tab栏 -->
+    <HorizontalScrollView
+        android:id="@+id/tab_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:background="#FF3A3A3A">
+
+        <LinearLayout
+            android:id="@+id/tab_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="8dp" />
+    </HorizontalScrollView>
+
+    <!-- 符号网格 -->
+    <GridLayout
+        android:id="@+id/symbol_grid"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:columnCount="8"
+        android:padding="4dp" />
+
+</LinearLayout>
