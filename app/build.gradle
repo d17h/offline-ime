@@ -14,6 +14,24 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0.0"
+
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
+        }
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.offline.ime"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0.0"
         
         ndk {
             abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64'
@@ -39,6 +57,21 @@ android {
     
     kotlinOptions {
         jvmTarget = '17'
+        freeCompilerArgs += [
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xopt-in=kotlin.RequiresOptIn"
+        ]
+    }
+
+    // Fix kapt generated path issue
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def taskName = variant.name.capitalize()
+            tasks.findByName("kapt${taskName}Kotlin")?.doFirst {
+                def kaptDir = file("${buildDir}/generated/source/kapt/${variant.name}")
+                kaptDir.mkdirs()
+            }
+        }
     }
     
     lintOptions {
